@@ -2,16 +2,17 @@
 #include <string.h> // String functions
 #include <ctype.h> // Testing and Mapping characters
 
-char decision[5]; // Not in structure as it does not have properties related to personalInfo, global just because
-
 struct personalInfo {
     float unitsUsePerMonth, price; // Float as values could be decimal
     char area[10], houseNumber[5], email[50], phoneNumber[15], meterNumber[15], name[50];
 };
 
+void priceCalculation(struct personalInfo *s1); // Used a pointer as it will affect the original structure from the function
+
 void createFiles(struct personalInfo s1); // Declaration of function createFiles
 
 int main() {
+    char decision[5]; // Not in structure as it does not have properties related to personalInfo
     struct personalInfo s1;
     printf("Enter your full name: ");
     scanf("%[^\n]s", s1.name); // [^\n] stops scanf from terminating upon a space, newline, whitespace
@@ -36,29 +37,12 @@ int main() {
     while (strcmp(s1.area, "urban") != 0 && strcmp(s1.area, "rural") != 0) {
         printf("Incorrect Area, please enter 'Rural' or 'Urban': ");
         scanf("%s", s1.area);
-    }
-
-    if (strcmp(s1.area, "urban") == 0) {
-
-        if (s1.unitsUsePerMonth >= 0 && s1.unitsUsePerMonth < 50.5) {
-            s1.price = 3.00 * s1.unitsUsePerMonth;
-        } else if (s1.unitsUsePerMonth >= 50.5 && s1.unitsUsePerMonth < 100.5) {
-            s1.price = 3.75 * s1.unitsUsePerMonth;
-        } else if (s1.unitsUsePerMonth >= 100.5) {
-            s1.price = 4.50 * s1.unitsUsePerMonth;
+        for (int i = 0; i < strlen(s1.area); i++) {
+            s1.area[i] = tolower(s1.area[i]);
         }
     }
 
-    else if (strcmp(s1.area, "rural") == 0) {
-
-        if (s1.unitsUsePerMonth >= 0 && s1.unitsUsePerMonth < 50.5) {
-            s1.price = 2.00 * s1.unitsUsePerMonth;
-        } else if (s1.unitsUsePerMonth >= 50.5 && s1.unitsUsePerMonth < 100.5) {
-            s1.price = 2.75 * s1.unitsUsePerMonth;
-        } else if (s1.unitsUsePerMonth >= 100.5) {
-            s1.price = 4.15 * s1.unitsUsePerMonth;
-        }
-    }
+    priceCalculation(&s1);
 
     printf("\n\n");
     for (int j = 0; j <= 40; j++) { // Makes a dashed line
@@ -92,6 +76,30 @@ int main() {
         printf("Energy_Bill.txt was successfully created");
     }
     return 0; // Ends code
+}
+
+void priceCalculation(struct personalInfo *s1) {
+    if (strcmp(s1->area, "urban") == 0) { // Using if statements to determine the price of the electricity bill.
+        // -> is used since it dereferences the pointer to access a member of the structure
+        if (s1->unitsUsePerMonth >= 0 && s1->unitsUsePerMonth < 50.5) {
+            s1->price = 3.00 * s1->unitsUsePerMonth;
+        } else if (s1->unitsUsePerMonth >= 50.5 && s1->unitsUsePerMonth < 100.5) {
+            s1->price = 3.75 * s1->unitsUsePerMonth;
+        } else if (s1->unitsUsePerMonth >= 100.5) {
+            s1->price = 4.50 * s1->unitsUsePerMonth;
+        }
+    }
+
+    else if (strcmp(s1->area, "rural") == 0) {
+
+        if (s1->unitsUsePerMonth >= 0 && s1->unitsUsePerMonth < 50.5) {
+            s1->price = 2.00 * s1->unitsUsePerMonth;
+        } else if (s1->unitsUsePerMonth >= 50.5 && s1->unitsUsePerMonth < 100.5) {
+            s1->price = 2.75 * s1->unitsUsePerMonth;
+        } else if (s1->unitsUsePerMonth >= 100.5) {
+            s1->price = 4.15 * s1->unitsUsePerMonth;
+        }
+    }
 }
 
 // Function definition
