@@ -120,7 +120,7 @@ void createFiles(struct personalInfo s1) {
         fclose(pFile); // Closes files
     }
     else {
-        printf("Error Accessing Energy_Bill.txt\n"); // In case file was already created
+        printf("Error Accessing Energy_Bill.txt\n"); // Error thrown in case file was already created
     }
 
 }
